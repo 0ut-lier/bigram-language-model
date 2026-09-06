@@ -1,27 +1,33 @@
-import torch
-
 from bigram import BigramModel, Vocabulary
 from bigram.data import download_words
 from bigram.sampling import generate_words
 
 
 def main():
+    # Load dataset
     words = download_words()
 
-    vocabulary = Vocabulary(words)
+    # Build vocabulary
+    vocab = Vocabulary(words)
 
-    model = BigramModel(vocabulary)
-
+    # Create and train model
+    model = BigramModel(vocab)
     model.fit(words)
+
+    # Convert counts into probabilities
     model.normalize()
 
-    generated = generate_words(
+    # Generate names
+    generated_words = generate_words(
         model,
         num_words=20,
-        seed=2147483647,
+        seed=42,
     )
 
-    for word in generated:
+    print("Generated names:")
+    print("-" * 30)
+
+    for word in generated_words:
         print(word)
 
 
